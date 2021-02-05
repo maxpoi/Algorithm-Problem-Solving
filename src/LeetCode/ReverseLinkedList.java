@@ -1,9 +1,9 @@
 package LeetCode;
 
 /***
- * reverse linked list
+ * Leetcode no206
  */
-public class No206 {
+public class ReverseLinkedList {
     class ListNode {
         int val;
         ListNode next;

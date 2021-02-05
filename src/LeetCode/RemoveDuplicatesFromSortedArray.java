@@ -1,9 +1,9 @@
 package LeetCode;
 
 /***
- * Remove Duplicates from Sorted Array
+ * Leetcode no26
  */
-public class No26 {
+public class RemoveDuplicatesFromSortedArray {
     public int removeDuplicates(int[] nums) {
         int len = nums.length;
         if (len <= 1) return len;
