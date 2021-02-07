@@ -11,39 +11,37 @@ import java.util.List;
  */
 
 public class ThreeSums {
-    public ArrayList<int[]> solution(int[] nums, int target) {
+    public List<List<Integer>> solution(int[] nums, int target) {
+        List<List<Integer>> ret = new ArrayList<>();
+        if (nums.length < 3) return ret;
+
         Arrays.sort(nums);
-        ArrayList<int[]> ret = new ArrayList<>();
 
-        int lastA = nums[0];
-        for(int i=0; i<nums.length; i++) {
-            if (nums[i] != lastA || i==0) {
-                int restSum = target - nums[i];
-                lastA = nums[i];
+        for(int i=0; i<nums.length-2; i++) {
+            if (i > 0 && nums[i] == nums[i-1]) {
+                continue;
+            }
 
-                int head = i+1, tail = nums.length-1;
-                int lastB = nums[head], lastC = nums[tail];
-                while(head != tail) {
-                    if ((nums[head] != lastB || nums[tail] != lastC)
-                            || (head == i+1 && tail == nums.length-1)) {
+            int restSum = target - nums[i];
+            int head = i+1, tail = nums.length-1;
 
-                        lastB = nums[head];
-                        lastC = nums[tail];
+            while(head < tail) {
+                int sum = nums[head] + nums[tail];
 
-                        int sum = nums[head] + nums[tail];
-                        if (sum == restSum) {
-                            int[] ans = new int[]{nums[i], nums[head], nums[tail]};
-                            ret.add(ans);
-                            head++;
-                            tail--;
-                        } else if (sum < target) {
-                            head++;
-                        } else {
-                            tail--;
-                        }
-
+                if (sum == restSum) {
+                    if ((head == i+1 && tail == nums.length-1) ||
+                            (nums[head] != nums[head-1] || nums[tail] != nums[tail+1])) {
+                        List<Integer> ans = Arrays.asList(nums[i], nums[head], nums[tail]);
+                        ret.add(ans);
                     }
 
+                    head++;
+                    tail--;
+
+                } else if (sum < restSum) {
+                    head++;
+                } else {
+                    tail--;
                 }
             }
         }
