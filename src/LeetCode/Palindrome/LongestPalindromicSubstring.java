@@ -90,7 +90,7 @@ public class LongestPalindromicSubstring {
      *
      */
     public String ManacherAlgorithm(String s) {
-
+        return "";
     }
 
 }
