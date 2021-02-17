@@ -72,25 +72,96 @@ public class LongestPalindromicSubstring {
      *      1) 插入字符，让len永远是奇数。
      *      2) 如果一个回文的长度是2n+1, 定义臂长为n，请问这个信息有用吗？
      *      3）时间复杂度为 O(n)， 空间复杂度为 O(n)
+     *      4) 回文对称性！
      *
-     *  "a": # a #
-     *       0 1 0
-     *  "aa": # a # a #
-     *        0 1 2 1 0
-     *  "ab": # a # b #
-     *        0 1 0 1 0
-     *  "aaa": # a # a # a #
-     *         0 1 2 3 2 1 0
-     *  ”abcdedcba": # a # b # c # d # e # d # c # b # a #
-     *               0 1 0 1 0 1 0 1 0 9 0 1 0 1 0 1 0 1 0
-     *  不难发现臂展在以c为中心的时候是对称的！不过也不是唯一的
-     *  “babad"：# b # a # b # a # d #
-     *          0 1 0 3 0 3 0 1 0 1 0
+     *               0  1  2  3  4  5  6  7  8  9  10 11 12 13 14 15 16 17 18
+     *  ”ababebaba": #  a  #  b  #  a  #  b  #  e  #  b  #  a  #  b  #  a  #
+     *               0  1  0  3  0  3  0  1  0  9  0  1  0  3  0  3  0  1  0
+     *                              j           x           i
+     *   Let's look at e, which is centered at index 9.
+     *   Take a look at i=13, a is centered at index 13, and is a palindromic of size 3 (bab)
+     *   Since a & bab is part of the longer palindromic, and palindromic is symmetric,
+     *   so a & bab must appear on the left hand side as well! which is at j position.
+     *   How to find j? well, i-x = x-j -> j = 2x-i
+     *
+     *   There are, however, some special situations.
+     *   1) Note that the length of the palindromic centered at i >= arm[j], not == arm[j]
+     *      For example, take a look at index 1 and index 5.
+     *   2) arm[i] will only >= arm[j] iff i-arm[j] & i + arm[j] is within the center arm range.
+     *      for example,
+     *                  0  1  2  3  4  5  6  7  8  9  10 11
+     *                  #  c  #  b  #  c  #  d  #  c  #  b  #  e  #
+     *                  0  1  0  3  0  1  0  5  0  1  0  1  0  1  0
+     *                           j           c           i
+     *      because 11 + arm[3] = 11 + 3 = 14 > c + arm[c] = 12.
+     *   3) i > arm[c] + c
+     *      if i is outside the range, then a common approach (expand from middle) can be used.
+     *
+     *   https://leetcode-cn.com/problems/longest-palindromic-substring/solution/zhong-xin-kuo-san-dong-tai-gui-hua-by-liweiwei1419/
+     *   This solution combines case 1 + 2 + 3 in a neat way.
+     *   The basic idea is to adjust arm before expanding.
+     *   case 1 & 2 can be shortened into arm[i] = Math.min(arm[j], c+arm[c]-i)
+     *
      *
      *
      */
     public String ManacherAlgorithm(String s) {
-        return "";
+        if (s==null || s.length() == 0) {
+            return "";
+        }
+
+        StringBuilder str = new StringBuilder("#");
+        for(int i=0; i<s.length(); i++) {
+            str.append(s.charAt(i));
+            str.append("#");
+        }
+
+        int[] arms = new int[str.length()];
+        int lastCenter = 0, maxCenter = 0;
+        for(int i=0; i<str.length(); i++) {
+            if (lastCenter+arms[lastCenter] > i) {
+                int mirror = 2*lastCenter-i;
+
+                // https://leetcode-cn.com/problems/longest-palindromic-substring/solution/zhong-xin-kuo-san-dong-tai-gui-hua-by-liweiwei1419/
+                arms[i] = Math.min(lastCenter+arms[lastCenter]-i, arms[mirror]);
+
+                // case 1 & common cases
+                if (i + arms[mirror] <= lastCenter + arms[lastCenter]) {
+                    arms[i] += expandMiddle(i, str, arms[i]);
+                } else {
+                    // case 2
+                    arms[i] += expandMiddle(i, str, arms[i]);
+
+                    if (arms[i]+i > lastCenter+arms[lastCenter]) {
+                        lastCenter = i;
+                    }
+                }
+            } else {
+                // case 3
+                arms[i] = expandMiddle(i, str, arms[i]);
+                lastCenter = i;
+            }
+
+            maxCenter = arms[i] > arms[maxCenter] ? i : maxCenter;
+        }
+        return s.substring((maxCenter-arms[maxCenter])/2, (maxCenter+arms[maxCenter])/2);
+    }
+
+    public int expandMiddle(int index, StringBuilder str, int arm) {
+        int len = 0;
+        int left = index-arm-1, right = index+arm+1;
+        while(left > -1 && right < str.length()) {
+            if (str.charAt(left) != str.charAt(right)) {
+                break;
+            }
+
+            left--;
+            right++;
+
+            len++;
+        }
+
+        return len;
     }
 
 }
