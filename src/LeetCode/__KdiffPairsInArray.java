@@ -6,8 +6,9 @@ import java.util.HashSet;
 
 /***
  * Leetcode No 532 Medium Level
+ * 一个小技巧
  */
-public class KdiffPairsInArray {
+public class __KdiffPairsInArray {
 
     /***
      * 循环一边靠hash来找pair的思路很容易想到

@@ -6,8 +6,9 @@ import java.util.stream.Collectors;
 
 /***
  * No. 1178 Hard Level
+ * 这个主要看一下后面用int来表示string的hash方式
  */
-public class NumberOfValidWords {
+public class __NumberOfValidWords {
 
     /***
      *

@@ -6,7 +6,7 @@ import java.util.List;
 /***
  * Leetcode No 22. Medium Level
  */
-public class GenerateParentheses {
+public class _GenerateParentheses {
 
     public List<String> solution(int n) {
         List<String> ret = new ArrayList<>();

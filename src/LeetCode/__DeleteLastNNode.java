@@ -4,17 +4,18 @@ import java.util.Stack;
 
 /***
  * Leetcode No 19. Medium Level
+ * 滑动窗口
  */
-public class DeleteLastNNode {
+public class __DeleteLastNNode {
 
     /***
      *
-     * Must achieve O(n)
+     * Must achieve n
      * 如果只是用常规的做法，比如存一个stack，然后根据n来pop，
-     * 那worst case就是 O(2n)
+     * 那worst case就是 2n
      *
-     * 要想achieve O(n)，题目中的"删除倒数第n个"这句话是关键。
-     * 而且之前的方法之所以是O(2*n)，是因为worst case的时候我们发现n=listNode的数量
+     * 要想achieve n，题目中的"删除倒数第n个"这句话是关键。
+     * 而且之前的方法之所以是2n，是因为worst case的时候我们发现n=listNode的数量
      * 运用滑动窗口的思路可以解决这个问题。
      * size=n, 在读新的listnode的时候，如果数量超过了size，说明最左边的一定不会被扔掉
      *

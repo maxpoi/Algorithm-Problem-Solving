@@ -4,9 +4,10 @@ import java.util.Stack;
 
 /***
  * Leetcode No 503. Medium
+ * 一个思路
  */
 
-public class NextGreaterElement {
+public class __NextGreaterElement {
 
 
     /***

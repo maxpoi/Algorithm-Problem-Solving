@@ -3,7 +3,7 @@ package LeetCode;
 /***
  * LeetCode No11 Medium Level
  */
-public class ContainerWithMostWater {
+public class _ContainerWithMostWater {
     public int solution(int[] heights) {
         /***
          * 核心思路就是：如果 left<=right,
